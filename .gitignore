@@ -1,6 +1,6 @@
 /node_modules
 /variables.env
-/.venv
+.env
 backup.txt
 positivos_covid.csv
 fallecidos_covid.csv
