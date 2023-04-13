@@ -122,6 +122,9 @@ const DepartamentoSchema = new mongoose.Schema({
       type: Date,
       required: true
     }
+}, {
+  versionKey: false,
+  minimize: false
 })
 
 const Loreto = mongoose.model('Loreto', DepartamentoSchema);

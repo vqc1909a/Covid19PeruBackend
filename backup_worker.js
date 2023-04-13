@@ -1,5 +1,3 @@
-// Este es el código del Worker Thread que se ejecutará en un hilo separado
-console.log("Ejecutando un worker")
 const { parentPort } = require('worker_threads');
 const fs = require("fs");
 const csv = require("csv-parser");
@@ -375,5 +373,3 @@ Promise.all(promises)
         message: `Ocurrió un error al descargar y guardar los archivos: ${err.message}`,
     })
 });
-
-

@@ -1,7 +1,9 @@
 /node_modules
 /variables.env
+/scripts
 .env
 backup.txt
+respuesta_exitosa.txt
 positivos_covid.csv
 fallecidos_covid.csv
 poblacion.csv

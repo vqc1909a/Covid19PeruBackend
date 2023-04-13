@@ -69,7 +69,6 @@ const PeruSchema = new mongoose.Schema({
       required: true
     }
 }, {
-    timestamps: true,
     versionKey: false,
     minimize: false
 })
