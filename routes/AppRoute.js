@@ -31,133 +31,133 @@ const {
 const Router = express.Router();
 
 Router.get('/peru', async (req, res) => {
-  const peru = await Peru.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(peru[0]);
+  const peru = await Peru.findOne({}).sort({fecha: -1});
+  return res.status(200).json(peru);
 })
 
 Router.get('/departamento/loreto', async (req, res) => {
-  const loreto = await Loreto.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(loreto[0]);
+  const loreto = await Loreto.findOne({}).sort({fecha: -1});
+  return res.status(200).json(loreto);
 })
 
 Router.get('/departamento/amazonas', async (req, res) => {
-  const amazonas = await Amazonas.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(amazonas[0]);
+  const amazonas = await Amazonas.findOne({}).sort({fecha: -1});
+  return res.status(200).json(amazonas);
 })
 
 Router.get('/departamento/tumbes', async (req, res) => {
-  const tumbes = await Tumbes.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(tumbes[0]);
+  const tumbes = await Tumbes.findOne({}).sort({fecha: -1});
+  return res.status(200).json(tumbes);
 })
 
 Router.get('/departamento/piura', async (req, res) => {
-  const piura = await Piura.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(piura[0]);
+  const piura = await Piura.findOne({}).sort({fecha: -1});
+  return res.status(200).json(piura);
 })
 
 Router.get('/departamento/lambayeque', async (req, res) => {
-  const lambayeque = await Lambayeque.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(lambayeque[0]);
+  const lambayeque = await Lambayeque.findOne({}).sort({fecha: -1});
+  return res.status(200).json(lambayeque);
 })
 
 Router.get('/departamento/cajamarca', async (req, res) => {
-  const cajamarca = await Cajamarca.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(cajamarca[0]);
+  const cajamarca = await Cajamarca.findOne({}).sort({fecha: -1});
+  return res.status(200).json(cajamarca);
 })
 
 Router.get('/departamento/la-libertad', async (req, res) => {
-  const lalibertad = await LaLibertad.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(lalibertad[0]);
+  const lalibertad = await LaLibertad.findOne({}).sort({fecha: -1});
+  return res.status(200).json(lalibertad);
 })
 
 Router.get('/departamento/ancash', async (req, res) => {
-  const ancash = await Ancash.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(ancash[0]);
+  const ancash = await Ancash.findOne({}).sort({fecha: -1});
+  return res.status(200).json(ancash);
 })
 
 Router.get('/departamento/san-martin', async (req, res) => {
-  const sanmartin = await SanMartin.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(sanmartin[0]);
+  const sanmartin = await SanMartin.findOne({}).sort({fecha: -1});
+  return res.status(200).json(sanmartin);
 })
 
 Router.get('/departamento/huanuco', async (req, res) => {
-  const huanuco = await Huanuco.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(huanuco[0]);
+  const huanuco = await Huanuco.findOne({}).sort({fecha: -1});
+  return res.status(200).json(huanuco);
 })
 
 Router.get('/departamento/ucayali', async (req, res) => {
-  const ucayali = await Ucayali.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(ucayali[0]);
+  const ucayali = await Ucayali.findOne({}).sort({fecha: -1});
+  return res.status(200).json(ucayali);
 })
 
 Router.get('/departamento/pasco', async (req, res) => {
-  const pasco = await Pasco.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(pasco[0]);
+  const pasco = await Pasco.findOne({}).sort({fecha: -1});
+  return res.status(200).json(pasco);
 })
 
 Router.get('/departamento/lima', async (req, res) => {
-  const lima = await Lima.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(lima[0]);
+  const lima = await Lima.findOne({}).sort({fecha: -1});
+  return res.status(200).json(lima);
 })
 
 Router.get('/departamento/junin', async (req, res) => {
-  const junin = await Junin.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(junin[0]);
+  const junin = await Junin.findOne({}).sort({fecha: -1});
+  return res.status(200).json(junin);
 })
 
 Router.get('/departamento/huancavelica', async (req, res) => {
-  const huancavelica = await Huancavelica.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(huancavelica[0]);
+  const huancavelica = await Huancavelica.findOne({}).sort({fecha: -1});
+  return res.status(200).json(huancavelica);
 })
 
 Router.get('/departamento/ica', async (req, res) => {
-  const ica = await Ica.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(ica[0]);
+  const ica = await Ica.findOne({}).sort({fecha: -1});
+  return res.status(200).json(ica);
 })
 
 Router.get('/departamento/ayacucho', async (req, res) => {
-  const ayacucho = await Ayacucho.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(ayacucho[0]);
+  const ayacucho = await Ayacucho.findOne({}).sort({fecha: -1});
+  return res.status(200).json(ayacucho);
 })
 
 Router.get('/departamento/apurimac', async (req, res) => {
-  const apurimac = await Apurimac.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(apurimac[0]);
+  const apurimac = await Apurimac.findOne({}).sort({fecha: -1});
+  return res.status(200).json(apurimac);
 })
 
 Router.get('/departamento/cusco', async (req, res) => {
-  const cusco = await Cusco.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(cusco[0]);
+  const cusco = await Cusco.findOne({}).sort({fecha: -1});
+  return res.status(200).json(cusco);
 })
 
 Router.get('/departamento/madre-de-dios', async (req, res) => {
-  const madrededios = await MadreDeDios.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(madrededios[0]);
+  const madrededios = await MadreDeDios.findOne({}).sort({fecha: -1});
+  return res.status(200).json(madrededios);
 })
 
 Router.get('/departamento/puno', async (req, res) => {
-  const puno = await Puno.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(puno[0]);
+  const puno = await Puno.findOne({}).sort({fecha: -1});
+  return res.status(200).json(puno);
 })
 
 Router.get('/departamento/arequipa', async (req, res) => {
-  const arequipa = await Arequipa.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(arequipa[0]);
+  const arequipa = await Arequipa.findOne({}).sort({fecha: -1});
+  return res.status(200).json(arequipa);
 })
 
 Router.get('/departamento/moquegua', async (req, res) => {
-  const moquegua = await Moquegua.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(moquegua[0]);
+  const moquegua = await Moquegua.findOne({}).sort({fecha: -1});
+  return res.status(200).json(moquegua);
 })
 
 Router.get('/departamento/tacna', async (req, res) => {
-  const tacna = await Tacna.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(tacna[0]);
+  const tacna = await Tacna.findOne({}).sort({fecha: -1});
+  return res.status(200).json(tacna);
 })
 
 Router.get('/departamento/callao', async (req, res) => {
-  const callao = await Callao.find({}).limit(1).sort({fecha: -1});
-  return res.status(200).json(callao[0]);
+  const callao = await Callao.findOne({}).sort({fecha: -1});
+  return res.status(200).json(callao);
 })
 
 module.exports = Router
