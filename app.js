@@ -84,7 +84,7 @@ connectDB()
   //'23 0-23/2 * * *' => correr 23 minutos después de la medianoche, 2am, 4am..., todos los días
   //'5 4 * * sun' => correr a las 5 después de las 4 am todos los domingos
   let job = new CronJob(
-      '0 0 22 * * *',
+      '0 6 2 * * *',
       function() {
         console.log('You will see this message every 22 hours of everyday');
           //Create Worker

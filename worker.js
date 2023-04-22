@@ -288,7 +288,7 @@ Promise.all(promises)
         let provincias = DEPARTAMENTO.provincias.map((provincia) => {
         return {
             "name": provincia.toLowerCase(),
-            "poblacion": obtenerDatosPoblacionPorDepartamento(DEPARTAMENTO.departamento).filter(fila => fila.Provincia.trim() === provincia).length,
+            "poblacion": obtenerDatosPoblacionPorDepartamento(DEPARTAMENTO.departamento).filter(fila => fila.Provincia.trim() === provincia).reduce((accumulator, currentValue) => accumulator + (Number(currentValue.Cantidad) || 0), initialValue),
             "positivos": filasInfectados.filter(fila => fila.PROVINCIA.trim() === provincia).length,
             "hombres_infectados": filasInfectados.filter(fila =>  fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "MASCULINO").length,
             "mujeres_infectados": filasInfectados.filter(fila => fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "FEMENINO").length,
