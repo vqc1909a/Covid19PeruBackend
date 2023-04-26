@@ -4,7 +4,12 @@ const app = express();
 const { Worker } =  require("worker_threads");
 const CronJob = require('cron').CronJob;
 const connectDB = require('./config/db.js');
+const helmet = require("helmet");
 const { NotFoundMiddleware, ErrorMiddleware} = require('./middlewares');
+const rateLimit = require('express-rate-limit');
+const compression = require('compression')
+
+require('dotenv').config();
 
 const {
   Loreto, 
@@ -33,6 +38,14 @@ const {
   Tacna,
   Callao} = require('./models/DepartamentoModel.js');
 const Peru = require('./models/PeruModel');
+
+const apiLimiter = rateLimit({
+	windowMs: 24 * 60 * 60 * 1000, // 24 horas
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 24 horas)
+  message: "Demasiadas peticiones realizadas a partir de esta IP, intente nuevamente después de 24 horas",
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
 
 require('dotenv').config();
 const port = process.env.PORT || 4000;
@@ -84,7 +97,7 @@ connectDB()
   //'23 0-23/2 * * *' => correr 23 minutos después de la medianoche, 2am, 4am..., todos los días
   //'5 4 * * sun' => correr a las 5 después de las 4 am todos los domingos
   let job = new CronJob(
-      '0 6 2 * * *',
+      '0 56 22 * * *',
       function() {
         console.log('You will see this message every 22 hours of everyday');
           //Create Worker
@@ -175,14 +188,17 @@ connectDB()
 
 
   //Middlewares
-  app.use(cors());
   app.use(express.json());
 
+  app.use(helmet());
+  app.use(compression());
+
+
   //APIS
-  app.use('/', require('./routes/AppRoute'));
-  app.use('/api', require('./routes/GeneralApi'));
-  app.use('/api', require('./routes/DepartamentoApi'));
-  app.use('/api', require('./routes/ProvinciaApi'));
+  app.use('/', cors({origin: process.env.REACT_APP_FRONTEND_URL}), require('./routes/AppRoute'));
+  app.use('/api', cors({origin: "*"}), apiLimiter, require('./routes/GeneralApi'));
+  app.use('/api', cors({origin: "*"}), apiLimiter, require('./routes/DepartamentoApi'));
+  app.use('/api', cors({origin: "*"}), apiLimiter, require('./routes/ProvinciaApi'));
 
   //Middlewares
   app.use(NotFoundMiddleware);
