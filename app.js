@@ -47,7 +47,6 @@ const apiLimiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-require('dotenv').config();
 const port = process.env.PORT || 4000;
 connectDB()
 .then(() => {
@@ -97,7 +96,7 @@ connectDB()
   //'23 0-23/2 * * *' => correr 23 minutos después de la medianoche, 2am, 4am..., todos los días
   //'5 4 * * sun' => correr a las 5 después de las 4 am todos los domingos
   let job = new CronJob(
-      '0 56 22 * * *',
+      '0 36 16 * * *',
       function() {
         console.log('You will see this message every 22 hours of everyday');
           //Create Worker
@@ -128,34 +127,37 @@ connectDB()
 
               //SCRIPT A DIARIO
               let responses = result.data;
-              let responsePromises = await Promise.all([
-                Peru.create(responses[0]), 
-                Amazonas.create(responses[1]),
-                Ancash.create(responses[2]),
-                Apurimac.create(responses[3]),
-                Arequipa.create(responses[4]),
-                Ayacucho.create(responses[5]),
-                Cajamarca.create(responses[6]),
-                Callao.create(responses[7]),
-                Cusco.create(responses[8]),
-                Huancavelica.create(responses[9]),
-                Huanuco.create(responses[10]),
-                Ica.create(responses[11]),
-                Junin.create(responses[12]),
-                LaLibertad.create(responses[13]),
-                Lambayeque.create(responses[14]),
-                Lima.create(responses[15]),
-                Loreto.create(responses[16]),
-                MadreDeDios.create(responses[17]),
-                Moquegua.create(responses[18]),
-                Pasco.create(responses[19]),
-                Piura.create(responses[20]),
-                Puno.create(responses[21]),
-                SanMartin.create(responses[22]),
-                Tacna.create(responses[23]),
-                Tumbes.create(responses[24]),
-                Ucayali.create(responses[25]),
-              ]);
+              console.log({
+                responses
+              })
+              // await Promise.all([
+              //   Peru.create(responses[0]), 
+              //   Amazonas.create(responses[1]),
+              //   Ancash.create(responses[2]),
+              //   Apurimac.create(responses[3]),
+              //   Arequipa.create(responses[4]),
+              //   Ayacucho.create(responses[5]),
+              //   Cajamarca.create(responses[6]),
+              //   Callao.create(responses[7]),
+              //   Cusco.create(responses[8]),
+              //   Huancavelica.create(responses[9]),
+              //   Huanuco.create(responses[10]),
+              //   Ica.create(responses[11]),
+              //   Junin.create(responses[12]),
+              //   LaLibertad.create(responses[13]),
+              //   Lambayeque.create(responses[14]),
+              //   Lima.create(responses[15]),
+              //   Loreto.create(responses[16]),
+              //   MadreDeDios.create(responses[17]),
+              //   Moquegua.create(responses[18]),
+              //   Pasco.create(responses[19]),
+              //   Piura.create(responses[20]),
+              //   Puno.create(responses[21]),
+              //   SanMartin.create(responses[22]),
+              //   Tacna.create(responses[23]),
+              //   Tumbes.create(responses[24]),
+              //   Ucayali.create(responses[25]),
+              // ]);
 
               if(result.status === "finished"){
                 console.log(message);
@@ -167,7 +169,7 @@ connectDB()
                 worker.terminate();                
               }
             }catch(err){
-              console.log(err.message);
+              console.log(err.message, err.stack);
               console.log("Deteniendo el worker");
               worker.terminate();
             }

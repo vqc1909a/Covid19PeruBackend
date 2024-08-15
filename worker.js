@@ -4,19 +4,19 @@ const { parentPort } = require('worker_threads');
 const fs = require("fs");
 const csv = require("csv-parser");
 const axios = require("axios");
-const stream = require('stream');
+// const stream = require('stream');
 const slug = require("slug");
-
+const DEPARTAMENTOS = require("./helpers/departamentos");
 const resInfectados = [];
 const resFallecidos = [];
 const resPoblacion = [];
 
-function fechaEnFormatoDate(fecha) {
-  const fechaFormateada = `${fecha.slice(0,4)}-${fecha.slice(4,6)}-${fecha.slice(6,8)}`;
-  return new Date(fechaFormateada);
-}
+// function fechaEnFormatoDate(fecha) {
+//   const fechaFormateada = `${fecha.slice(0,4)}-${fecha.slice(4,6)}-${fecha.slice(6,8)}`;
+//   return new Date(fechaFormateada);
+// }
 
-const URL_INFECTADOS = "https://files.minsa.gob.pe/s/eRqxR35ZCxrzNgr/download";
+const URL_INFECTADOS = "https://files.minsa.gob.pe/s/qWfz3p5mJBtmMEp/download";
 const URL_FALLECIDOS = "https://files.minsa.gob.pe/s/t9AFqRbXw3F55Ho/download";
 const URL_POBLACION = "https://cloud.minsa.gob.pe/s/Jwck8Z59snYAK8S/download";
 const urls = [
@@ -59,7 +59,7 @@ Promise.all(promises)
   // Creamos un stream de lectura a partir del stream de datos (DIRECTOR DE UN ARCHIVO)
   const csvStreamInfectados = streamInfectados.pipe(csv({ separator: ';' }));
   const csvStreamFallecidos= streamFallecidos.pipe(csv({ separator: ';' }));
-  const csvStreamPoblacion= streamPoblacion.pipe(csv({ separator: ',' }));
+  const csvStreamPoblacion= streamPoblacion.pipe(csv({ separator: ';' }));
 
   // Escuchamos el evento "data" del stream para procesar cada fila del CSV
   csvStreamInfectados.on('data', data => {
@@ -106,108 +106,7 @@ Promise.all(promises)
     month = String(month).length === 1 ? `0${month}` : month
 
     //Esto lo usaremos para el script diario que se haría
-    const DEPARTAMENTOS = [
-      {
-       departamento: "AMAZONAS",
-       provincias: ["CHACHAPOYAS", "BAGUA", "BONGARA", "CONDORCANQUI", "LUYA", "RODRIGUEZ DE MENDOZA", "UTCUBAMBA"] 
-      },
-      {
-       departamento: "ANCASH",
-       provincias: ["HUARAZ", "AIJA", "ANTONIO RAIMONDI", "ASUNCION", "BOLOGNESI", "CARHUAZ", "CARLOS FERMIN FITZCARRALD", "CASMA", "CORONGO", "HUARI", "HUARMEY", "HUAYLAS", "MARISCAL LUZURIAGA", "OCROS", "PALLASCA", "POMABAMBA", "RECUAY", "SANTA", "SIHUAS", "YUNGAY"] 
-      },
-      {
-       departamento: "APURIMAC",
-       provincias: ["ABANCAY", "ANDAHUAYLAS", "ANTABAMBA", "AYMARAES", "COTABAMBAS", "CHINCHEROS", "GRAU"] 
-      },
-      {
-       departamento: "AREQUIPA",
-       provincias: ["AREQUIPA", "CAMANA", "CARAVELI", "CASTILLA", "CAYLLOMA", "CONDESUYOS", "ISLAY", "LA UNION"] 
-      },
-      {
-       departamento: "AYACUCHO",
-       provincias: ["HUAMANGA", "CANGALLO", "HUANCA SANCOS", "HUANTA", "LA MAR", "LUCANAS", "PARINACOCHAS", "PAUCAR DEL SARA SARA", "SUCRE", "VICTOR FAJARDO", "VILCAS HUAMAN"] 
-      },
-      {
-       departamento: "CAJAMARCA",
-       provincias: ["CAJAMARCA", "CAJABAMBA", "CELENDIN", "CHOTA", "CONTUMAZA", "CUTERVO", "HUALGAYOC", "JAEN", "SAN IGNACIO", "SAN MARCOS", "SAN MIGUEL", "SAN PABLO", "SANTA CRUZ"] 
-      },
-      {
-       departamento: "CALLAO",
-       provincias: ["CALLAO"] 
-      },
-      {
-       departamento: "CUSCO",
-       provincias: ["CUSCO", "ACOMAYO", "ANTA", "CALCA", "CANAS", "CANCHIS", "CHUMBIVILCAS", "ESPINAR", "LA CONVENCION", "PARURO", "PAUCARTAMBO", "QUISPICANCHI", "URUBAMBA"] 
-      },
-      {
-       departamento: "HUANCAVELICA",
-       provincias: ["HUANCAVELICA", "ACOBAMBA", "ANGARAES", "CASTROVIRREYNA", "CHURCAMPA", "HUAYTARA", "TAYACAJA"] 
-      },
-      {
-       departamento: "HUANUCO",
-       provincias: ["HUANUCO", "AMBO", "DOS DE MAYO", "HUACAYBAMBA", "HUAMALIES", "LEONCIO PRADO", "MARAÑON", "PACHITEA", "PUERTO INCA", "LAURICOCHA", "YAROWILCA"] 
-      },
-      {
-       departamento: "ICA",
-       provincias: ["ICA", "CHINCHA", "NAZCA", "PALPA", "PISCO"] 
-      },
-      {
-       departamento: "JUNIN",
-       provincias: ["HUANCAYO", "CONCEPCION", "CHANCHAMAYO", "JAUJA", "JUNIN", "SATIPO", "TARMA", "YAULI", "CHUPACA"] 
-      },
-      {
-       departamento: "LA LIBERTAD",
-       provincias: ["TRUJILLO", "ASCOPE", "BOLIVAR", "CHEPEN", "JULCAN", "OTUZCO", "PACASMAYO", "PATAZ", "SANCHEZ CARRION", "SANTIAGO DE CHUCO", "GRAN CHIMU", "VIRU"] 
-      },
-      {
-       departamento: "LAMBAYEQUE",
-       provincias: ["CHICLAYO", "FERREÑAFE", "LAMBAYEQUE"] 
-      },
-      {
-       departamento: "LIMA",
-       provincias: ["LIMA", "BARRANCA", "CAJATAMBO", "CANTA", "CAÑETE", "HUARAL", "HUAROCHIRI", "HUAURA", "OYON", "YAUYOS"] 
-      },
-      {
-       departamento: "LORETO",
-       provincias: ["MAYNAS", "ALTO AMAZONAS", "LORETO", "MARISCAL RAMON CASTILLA", "REQUENA", "UCAYALI", "DATEM DEL MARAÑON", "PUTUMAYO"] 
-      },
-      {
-       departamento: "MADRE DE DIOS",
-       provincias: ["TAMBOPATA", "MANU", "TAHUAMANU"] 
-      },
-      {
-       departamento: "MOQUEGUA",
-       provincias: ["MARISCAL NIETO", "GENERAL SANCHEZ CERRO", "ILO"] 
-      },
-      {
-       departamento: "PASCO",
-       provincias: ["PASCO", "DANIEL ALCIDES CARRION", "OXAPAMPA"] 
-      },
-      {
-       departamento: "PIURA",
-       provincias: ["PIURA", "AYABACA", "HUANCABAMBA", "MORROPON", "PAITA", "SULLANA", "TALARA", "SECHURA"] 
-      },
-      {
-       departamento: "PUNO",
-       provincias: ["PUNO", "AZANGARO", "CARABAYA", "CHUCUITO", "EL COLLAO", "HUANCANE", "LAMPA", "MELGAR", "MOHO", "SAN ANTONIO DE PUTINA", "SAN ROMAN", "SANDIA", "YUNGUYO"] 
-      },
-      {
-       departamento: "SAN MARTIN",
-       provincias: ["MOYOBAMBA", "BELLAVISTA", "EL DORADO", "HUALLAGA", "LAMAS", "MARISCAL CACERES", "PICOTA", "RIOJA", "SAN MARTIN", "TOCACHE"] 
-      },
-      {
-       departamento: "TACNA",
-       provincias: ["TACNA", "CANDARAVE", "JORGE BASADRE", "TARATA"] 
-      },
-      {
-       departamento: "TUMBES",
-       provincias: ["TUMBES", "CONTRALMIRANTE VILLAR", "ZARUMILLA"] 
-      },
-      {
-       departamento: "UCAYALI",
-       provincias: ["CORONEL PORTILLO", "ATALAYA", "PADRE ABAD", "PURUS"] 
-      }
-    ]
+    
     const obtenerDatosPoblacionPorDepartamento = (departamento) => {
       return resPoblacion.filter(fila => fila.Departamento.trim() === departamento);
     }
@@ -216,8 +115,24 @@ Promise.all(promises)
     }
 
     //Array de objetos, cada objeto es una fila de la tabla de datos
-    let fechasConRepeticiones = resInfectados.map(fila => fila.FECHA_RESULTADO.trim());
-    let fechasSinRepeticiones =  [...new Set(fechasConRepeticiones)].filter(fecha => fecha !== "");
+    let fechasConRepeticiones = [];
+		for (let i = 0; i < resInfectados.length; i++) {
+			fechasConRepeticiones.push(
+				resInfectados[i].FECHA_RESULTADO.trim()
+			);
+		}
+
+    let fechasSinRepeticiones = [];
+		let seen = new Set();
+
+		for (let i = 0; i < fechasConRepeticiones.length; i++) {
+			let fecha = fechasConRepeticiones[i];
+			if (fecha !== "" && !seen.has(fecha)) {
+				seen.add(fecha);
+				fechasSinRepeticiones.push(fecha);
+			}
+		}
+
     //Ordenamos las fechas de forma ascendente, en este caso trabajamos con la fecha de los infectados porque hay mas fechas ahi
     //NOTA: Hay fechas vacías "", la cantidad de ello lo aumentaremos en cada una de las fechas, asi que no hay problema
     fechasSinRepeticiones.sort((fechaAnterior, fechaSiguiente) => fechaAnterior - fechaSiguiente);
@@ -228,6 +143,9 @@ Promise.all(promises)
 
     //SCRIPT A DIARIO
     let responses = [];
+
+    // let filasInfectados = resInfectados.filter(fila => fila.FECHA_RESULTADO <= "20230507");
+    // let filasFallecidos = resFallecidos.filter(fila => fila.FECHA_FALLECIMIENTO <= "20230507");
 
     let filasInfectados = resInfectados;
     let filasFallecidos = resFallecidos;
@@ -264,9 +182,13 @@ Promise.all(promises)
             "adultez": totalFallecidosAdultez,
             "persona_mayor": totalFallecidosPersonaMayor
         },
+        // "fecha": new Date(`2023-05-01`)
         "fecha": new Date(`${year}-${month}-${day}`)
     }
     const responseDepartamentos = DEPARTAMENTOS.map((DEPARTAMENTO) => {
+        // let filasInfectados = resInfectados.filter(fila => fila.DEPARTAMENTO.trim() === DEPARTAMENTO.departamento && fila.FECHA_RESULTADO <= "20230507");
+        // let filasFallecidos = resFallecidos.filter(fila => fila.DEPARTAMENTO.trim() === DEPARTAMENTO.departamento && fila.FECHA_FALLECIMIENTO <= "20230507");
+
         let filasInfectados = resInfectados.filter(fila => fila.DEPARTAMENTO.trim() === DEPARTAMENTO.departamento);
         let filasFallecidos = resFallecidos.filter(fila => fila.DEPARTAMENTO.trim() === DEPARTAMENTO.departamento);
 
@@ -286,26 +208,27 @@ Promise.all(promises)
         let totalFallecidosPersonaMayor = filasFallecidos.filter(fila => Number(fila.EDAD_DECLARADA.trim()) >= 60).length;
 
         let provincias = DEPARTAMENTO.provincias.map((provincia) => {
-        return {
-            "name": provincia.toLowerCase(),
-            "poblacion": obtenerDatosPoblacionPorDepartamento(DEPARTAMENTO.departamento).filter(fila => fila.Provincia.trim() === provincia).reduce((accumulator, currentValue) => accumulator + (Number(currentValue.Cantidad) || 0), initialValue),
-            "positivos": filasInfectados.filter(fila => fila.PROVINCIA.trim() === provincia).length,
-            "hombres_infectados": filasInfectados.filter(fila =>  fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "MASCULINO").length,
-            "mujeres_infectados": filasInfectados.filter(fila => fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "FEMENINO").length,
-            "fallecidos": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia).length,
-            "hombres_fallecidos": filasFallecidos.filter(fila =>  fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "MASCULINO").length,
-            "mujeres_fallecidos": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "FEMENINO").length,
-            "type": "Provincia",
-            "etapa_de_vida_fallecidos": {
-            "primera_infancia": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 0 && Number(fila.EDAD_DECLARADA.trim()) <= 5).length,
-            "infancia": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 6 && Number(fila.EDAD_DECLARADA.trim()) <= 11).length,
-            "adolescencia": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 12 && Number(fila.EDAD_DECLARADA.trim()) <= 18).length,
-            "juventud": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 19 && Number(fila.EDAD_DECLARADA.trim()) <= 26).length,
-            "adultez": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 27 && Number(fila.EDAD_DECLARADA.trim()) <= 59).length,
-            "persona_mayor": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 60).length
-            },
-            "fecha": new Date(`${year}-${month}-${day}`)
-        }
+          return {
+              "name": provincia.toLowerCase(),
+              "poblacion": obtenerDatosPoblacionPorDepartamento(DEPARTAMENTO.departamento).filter(fila => fila.Provincia.trim() === provincia).reduce((accumulator, currentValue) => accumulator + (Number(currentValue.Cantidad) || 0), initialValue),
+              "positivos": filasInfectados.filter(fila => fila.PROVINCIA.trim() === provincia).length,
+              "hombres_infectados": filasInfectados.filter(fila =>  fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "MASCULINO").length,
+              "mujeres_infectados": filasInfectados.filter(fila => fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "FEMENINO").length,
+              "fallecidos": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia).length,
+              "hombres_fallecidos": filasFallecidos.filter(fila =>  fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "MASCULINO").length,
+              "mujeres_fallecidos": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && fila.SEXO.trim() === "FEMENINO").length,
+              "type": "Provincia",
+              "etapa_de_vida_fallecidos": {
+              "primera_infancia": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 0 && Number(fila.EDAD_DECLARADA.trim()) <= 5).length,
+              "infancia": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 6 && Number(fila.EDAD_DECLARADA.trim()) <= 11).length,
+              "adolescencia": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 12 && Number(fila.EDAD_DECLARADA.trim()) <= 18).length,
+              "juventud": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 19 && Number(fila.EDAD_DECLARADA.trim()) <= 26).length,
+              "adultez": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 27 && Number(fila.EDAD_DECLARADA.trim()) <= 59).length,
+              "persona_mayor": filasFallecidos.filter(fila => fila.PROVINCIA.trim() === provincia && Number(fila.EDAD_DECLARADA.trim()) >= 60).length
+              },
+              // "fecha": new Date(`2023-05-01`)
+              "fecha": new Date(`${year}-${month}-${day}`) 
+          }
         })
         return {
             "name": DEPARTAMENTO.departamento.toLowerCase(),
@@ -327,20 +250,22 @@ Promise.all(promises)
             },
             "url": slug(DEPARTAMENTO.departamento.toLowerCase()),
             "provincias": provincias,
+            // "fecha": new Date(`2023-05-01`)
             "fecha": new Date(`${year}-${month}-${day}`)
+
         }
     })
 
+    console.log({
+      dataMemory: process.memoryUsage(),
+      heapMemory: process.memoryUsage().heapUsed,
+      totalMemory: process.memoryUsage().rss
+    })
     responses = [responsePeru, ...responseDepartamentos];
     parentPort.postMessage({
       status: "finished",
       message: "Datos parseados correctamente",
       data: responses
-    })
-    console.log({
-      dataMemory: process.memoryUsage(),
-      heapMemory: process.memoryUsage().heapUsed,
-      totalMemory: process.memoryUsage().rss
     })
   }).catch(err => {
     parentPort.postMessage({
