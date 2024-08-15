@@ -73,5 +73,22 @@ const PeruSchema = new mongoose.Schema({
     minimize: false
 })
 
+
+PeruSchema.set("toJSON", {
+	transform: (document, returnedObject) => {
+		delete returnedObject._id;
+    if (returnedObject.fecha) {
+      returnedObject.fecha = returnedObject.fecha.toISOString().split("T")[0];
+    }
+	},
+});
+
+EtapaSchema.set("toJSON", {
+	transform: (document, returnedObject) => {
+		delete returnedObject._id;
+	},
+});
+
+
 const Peru = mongoose.model('Peru', PeruSchema);
 module.exports = Peru;

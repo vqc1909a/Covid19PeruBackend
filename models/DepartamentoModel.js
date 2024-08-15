@@ -127,6 +127,32 @@ const DepartamentoSchema = new mongoose.Schema({
   minimize: false
 })
 
+EtapaSchema.set("toJSON", {
+	transform: (document, returnedObject) => {
+		delete returnedObject._id;
+	},
+});
+
+ProvinciaSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    delete returnedObject._id;
+    if (returnedObject.fecha) {
+      returnedObject.fecha = returnedObject.fecha.toISOString().split("T")[0];
+    }
+  },
+});
+
+DepartamentoSchema.set("toJSON", {
+	transform: (document, returnedObject) => {
+		delete returnedObject._id;
+    if (returnedObject.fecha) {
+			returnedObject.fecha = returnedObject.fecha.toISOString().split("T")[0];
+		}
+  },
+});
+
+
+
 const Loreto = mongoose.model('Loreto', DepartamentoSchema);
 const Amazonas = mongoose.model('Amazonas', DepartamentoSchema);
 const Tumbes = mongoose.model('Tumbes', DepartamentoSchema);
