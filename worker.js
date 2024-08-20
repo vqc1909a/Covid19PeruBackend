@@ -10,6 +10,7 @@ const DEPARTAMENTOS = require("./helpers/departamentos");
 const resInfectados = [];
 const resFallecidos = [];
 const resPoblacion = [];
+const {DateTime} = require("luxon");
 
 // function fechaEnFormatoDate(fecha) {
 //   const fechaFormateada = `${fecha.slice(0,4)}-${fecha.slice(4,6)}-${fecha.slice(6,8)}`;
@@ -98,12 +99,12 @@ Promise.all(promises)
     let totalPoblacion = resPoblacion.reduce((accumulator, currentValue) => accumulator + (Number(currentValue.Cantidad) || 0), initialValue);
 
     //Fecha Actual
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth() + 1;
-    let year = date.getFullYear();
-    day = String(day).length === 1 ? `0${day}` : day
-    month = String(month).length === 1 ? `0${month}` : month
+    let date = DateTime.now().setZone("America/Lima");
+    let day = date.day;
+    let month = date.month;
+    let year = date.year;
+    day = String(day).length === 1 ? `0${day}` : day;
+    month = String(month).length === 1 ? `0${month}` : month;
 
     //Esto lo usaremos para el script diario que se haría
     
