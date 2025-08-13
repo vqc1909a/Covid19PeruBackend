@@ -99,7 +99,7 @@ connectDB()
   let job = new CronJob(
       '0 0 22 * * *',
       function() {
-        console.log('You will see this message every 22 hours of each everyday');
+        console.log('You will see this message at 22 hours per day');
           //Create Worker
           const worker = new Worker("./worker.js");
           //Eventos del Worker
@@ -193,9 +193,15 @@ connectDB()
   app.use(helmet());
   app.use(compression());
 
+  // * Use origin: "*" for public APIs with no credentials.
+  // * Use a specific origin and credentials: true for APIs that require authentication or cookies.
+  // * Never use credentials: 'include' with origin: "*". The browser will block the request.
 
   //APIS
-  app.use('/', cors({origin: process.env.REACT_APP_FRONTEND_URL}), require('./routes/AppRoute'));
+  // Your backend sends the Access-Control-Allow-Credentials: true header and the correct Access-Control-Allow-Origin value.
+  app.use('/', cors({origin: process.env.REACT_APP_FRONTEND_URL, credentials: true}), require('./routes/AppRoute'));
+  
+  // Your backend only sends the Access-Control-Allow-Origin: * header. If your frontend tries to use fetch(..., { credentials: 'include' }), the browser will block the response due to missing Access-Control-Allow-Credentials: true header.
   app.use('/api', cors({origin: "*"}), apiLimiter, require('./routes/GeneralApi'));
   app.use('/api', cors({origin: "*"}), apiLimiter, require('./routes/DepartamentoApi'));
   app.use('/api', cors({origin: "*"}), apiLimiter, require('./routes/ProvinciaApi'));

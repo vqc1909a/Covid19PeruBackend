@@ -52,17 +52,18 @@ Promise.all(promises)
 .then(() => {
   console.log('Todas las descargas y guardados se han completado exitosamente.');
   // Ejecutar la acción que deseas realizar aquí
-  // Creamos un stream de lectura del archivo CSV (DIRECTO DE UN ARCHIVO)
+
+  // When you use fs.createReadStream, you create a readable stream from a file. This stream reads the file chunk by chunk and emits events like data (when a chunk is available) and end (when reading is finished). 
   const streamInfectados = fs.createReadStream("./positivos_covid.csv");
   const streamFallecidos = fs.createReadStream("./fallecidos_covid.csv");
   const streamPoblacion = fs.createReadStream("./poblacion.csv");
 
-  // Creamos un stream de lectura a partir del stream de datos (DIRECTOR DE UN ARCHIVO)
+  // Creates a stream that parses each row of the CSV file into a JavaScript object as the file is read.
   const csvStreamInfectados = streamInfectados.pipe(csv({ separator: ';' }));
   const csvStreamFallecidos= streamFallecidos.pipe(csv({ separator: ';' }));
   const csvStreamPoblacion= streamPoblacion.pipe(csv({ separator: ';' }));
 
-  // Escuchamos el evento "data" del stream para procesar cada fila del CSV
+  // You create the array of objects by listening to the 'data' event:
   csvStreamInfectados.on('data', data => {
     resInfectados.push(data);
   });
@@ -73,7 +74,8 @@ Promise.all(promises)
     resPoblacion.push(data);
   })
 
-  // Escuchamos el evento "end" del stream para saber cuándo se ha terminado de procesar el CSV
+  // The 'end' event is emitted by a stream when it has finished reading all data. In your code, you listen for the 'end' event on each CSV stream to know when the parsing of the file is complete:
+
   const promesaInfectados = new Promise((resolve) => {
     csvStreamInfectados.on('end', () => {
       console.log('Stream Infectados terminó');
@@ -275,7 +277,7 @@ Promise.all(promises)
     });
   });
 
-  // Manejamos el evento "error" en caso de que haya algún problema con el archivo
+  // Manejamos el evento "error" en caso de que haya algún problema con los archivos
   streamInfectados.on('error', error => {
     parentPort.postMessage({
         status: "error",
