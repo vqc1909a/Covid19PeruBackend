@@ -182,7 +182,7 @@ connectDB()
           })
       },
       null,
-      true,
+      false,
       'America/Lima' //Zona Horaria de Perú => https://momentjs.com/timezone/
   );
 
